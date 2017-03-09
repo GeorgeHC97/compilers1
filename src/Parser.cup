@@ -1,0 +1,218 @@
+import java_cup.runtime.*;
+
+parser code{:
+	public boolean syntaxErrors = false;
+	public void syntax_error(Symbol current_token) {
+		syntaxErrors = true;
+		report_error(
+			"Syntax error at line " + (current_token.left+1) + ", column " + current_token.right, null
+		);
+	}
+:}
+
+
+terminal IDENTIFIER, BOOLEAN; 
+terminal CHARACTER,INTEGER,RATIONAL,STRING; 
+terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
+terminal TDEF, FDEF, ALIAS, MAIN, VOID;
+terminal PLUS, MINUS, DIV, MULT, POW, ASSIGN;
+terminal EQ, NOTEQ, NOT, LESS, LESSEQ, AND, OR;
+terminal IF,ELSE,ELIF,THEN,FI,WHILE, DO,OD,FORALL,IN, RETURN;
+terminal READ, PRINT;
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
+terminal CAT, LEN;
+terminal BADCHAR, FLOAT_LIT;
+
+nonterminal CodeProject, Main, CodeProject1;
+nonterminal Epsilon, DICTSEQTYPE;
+nonterminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssignment, Assignment;
+nonterminal BooleanOperators, NumericOperators, BooleanCompare, NumericCompare;
+nonterminal DictSeqOperator;
+nonterminal SeqOperator, SeqExpression, SeqExpression1, SeqExpression2;
+nonterminal ConcatVar, Concat, ConcatExtension, ConcatList;
+nonterminal BooleanExpression, MathsExpression, Expressions;
+nonterminal MainReturn, Statements, Parameters, Parameters1,Parameters2;
+nonterminal DictDeclare, DictDeclareID, Dictionary, DictValues, DictValues1, DictionaryList, DictionaryNest;
+nonterminal SeqDeclare, SeqDeclareID, Sequence, SeqValues,SeqValues1, SequenceList, SequenceNest, SeqListExtension;
+nonterminal Alias, NameType, NewDataType, DeclarationList, DecListExtension;
+nonterminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, DictListExtension,SequenceList1,SequenceList2,SequenceLis3,FuncParamList1;
+
+nonterminal Parentheses, LengthSeq, FuncParamTypes;
+nonterminal NewTypeAssign, NewTypeAssign1, NewTypeAssign2;
+nonterminal SeqOperator1, SeqOperator2, Assignment1, Assignment2;
+nonterminal AllDataValues, StatementsWithOutEpsilon;
+
+//Might be needed later keep for now 
+//nonterminal BadChar, DictSeqValues, DictSeqID, DictOperator, ReturnStatement, FLOAT_LIT;
+
+precedence left MINUS;
+precedence left PLUS;
+precedence left DIV;
+precedence left MULT;
+precedence left COMMA;
+precedence left OR;
+precedence left AND;
+precedence left NOT;
+precedence left NOTEQ;
+precedence left EQ;
+precedence left IDENTIFIER;
+precedence left LESSEQ;
+precedence left LESS;
+precedence left IN;
+precedence left CAT;
+
+precedence left POW;
+precedence left RPAREN;
+precedence left LPAREN;
+
+start with CodeProject;
+
+
+
+CodeProject ::= CodeProject1 Main CodeProject1;
+		
+CodeProject1 ::= Function CodeProject1 | 
+	    	VariableDeclare CodeProject1 | 
+		NewDataType CodeProject1 |
+		Alias CodeProject1 |
+		Dictionary CodeProject1 |
+		Sequence CodeProject1 |Epsilon;
+					
+Epsilon ::=     ;
+
+
+DataType ::= CHAR|BOOL|INT|RAT|FLOAT|TOP|IDENTIFIER;
+ReturnType ::= VOID|DataType|SeqDeclare|DictDeclare;
+DataValue ::= CHARACTER|BOOLEAN|INTEGER|RATIONAL|FLOAT_LIT|STRING|IDENTIFIER;
+AllDataValues ::= DataValue | SeqValues | DictValues;
+
+VariableDeclare ::= DataType IDENTIFIER VariableAssignment SEMIC;
+VariableAssignment ::= ASSIGN Assignment2 | Epsilon;  
+
+Assignment ::= Assignment1 ASSIGN Assignment2 SEMIC;
+Assignment1 ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER; 
+Assignment2 ::= NewTypeAssign |Expressions;
+
+/*Operators*/
+BooleanOperators ::= AND | OR;
+NumericOperators ::= PLUS|MINUS|MULT|DIV|POW;
+BooleanCompare ::= EQ | NOTEQ;
+NumericCompare ::= BooleanCompare | LESS | LESSEQ;
+
+//DictSeqValues ::= IDENTIFIER | DictValues | SeqValues;
+//DictSeqID ::= IDENTIFIER | INTEGER;  //Assuming you can also have a predefined variable
+DictSeqOperator ::= Expressions IN Expressions; //| LEN LBRACK DictSeqID RBRACK; //Not Complete
+//DictOperator ::= IDENTIFIER LBRACK Expressions RBRACK;  //Not Complete
+
+
+
+SeqOperator ::= IDENTIFIER SeqOperator1;
+SeqOperator1 ::= LBRACK SeqExpression RBRACK SeqOperator2;
+SeqOperator2 ::= SeqOperator1 | Epsilon;
+SeqExpression ::= Expressions SeqExpression1 | COLON Expressions;
+SeqExpression1 ::= COLON SeqExpression2 | Epsilon;
+SeqExpression2 ::= Expressions | Epsilon;
+
+DICTSEQTYPE::= DataType | DictDeclare | SeqDeclare;
+/*Dictionary and Sequences*/
+DictDeclare ::= DICT LESS DICTSEQTYPE COMMA DICTSEQTYPE MORESIGN;
+DictDeclareID ::= DictDeclare IDENTIFIER;
+Dictionary ::= DictDeclareID ASSIGN DictValues1; 
+DictValues1 ::= DictValues SEMIC | FunctionCall SEMIC; 
+DictValues ::= LBRACE DictionaryList RBRACE;
+DictionaryList ::= DataValue COLON DataValue DictListExtension | DictionaryNest | Epsilon;
+DictionaryNest ::= DictValues DictListExtension;
+DictListExtension ::= COMMA DictionaryList | Epsilon;
+
+SeqDeclare ::= SEQ LESS DICTSEQTYPE MORESIGN;
+SeqDeclareID ::= SeqDeclare IDENTIFIER;
+Sequence ::= SeqDeclareID ASSIGN SeqValues1;
+SeqValues1 ::= SeqValues SEMIC | FunctionCall SEMIC |Concat SEMIC; 
+SeqValues ::= LBRACK SequenceList RBRACK ;
+SequenceList ::= SequenceList2 | SequenceList1 | SequenceNest | ;
+SequenceList2 ::= DataValue SeqListExtension;
+SequenceList1 ::= MINUS DataValue SeqListExtension ;
+SequenceNest ::= SeqValues SeqListExtension;
+SeqListExtension ::= COMMA SequenceList | Epsilon;
+
+
+/*End - Dictionary and Sequences*/
+              
+
+ConcatVar ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER |SeqValues | SeqOperator; 
+Concat ::= ConcatVar ConcatExtension ; 
+ConcatExtension ::= CAT ConcatVar ConcatList;
+ConcatList ::= ConcatExtension | Epsilon;
+
+BooleanExpression ::= Expressions NumericCompare Expressions | 
+		NOT Expressions | 
+		Expressions BooleanOperators Expressions ;
+MathsExpression ::= Expressions NumericOperators Expressions| MINUS Expressions;
+Parentheses ::= LPAREN Expressions RPAREN;
+LengthSeq ::= LEN Parentheses;
+
+Expressions ::= MathsExpression|
+		BooleanExpression|
+		Concat |
+		FunctionCall |  
+		DataValue|
+		IDENTIFIER DOT IDENTIFIER|
+		Parentheses|
+		LengthSeq|
+		SeqOperator|		
+		DictSeqOperator;
+
+Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMIC; 
+MainReturn ::= RETURN Expressions SEMIC | RETURN SEMIC;
+Body ::= Statements;
+StatementsWithOutEpsilon ::= FunctionCall SEMIC Statements | 
+		VariableDeclare Statements | 
+		NewDataType Statements |
+		Alias Statements |
+		Dictionary Statements |
+		Sequence Statements |
+		IfStatement Statements |
+		WhileLoop Statements |
+		ForLoop Statements |
+		Read Statements |
+		Print Statements| 
+		Assignment Statements |
+		MainReturn;
+Statements ::=  StatementsWithOutEpsilon |Epsilon;
+			  
+
+Function ::= FDEF ReturnType IDENTIFIER LPAREN Parameters RPAREN LBRACE Statements RBRACE SEMIC;
+FuncParamTypes ::= DataType | DictDeclare | SeqDeclare;
+Parameters ::= FuncParamTypes IDENTIFIER Parameters1|  Epsilon; //Need to check how to do epsilon (null) 
+Parameters1 ::= COMMA Parameters2 | Epsilon;
+Parameters2 ::= FuncParamTypes IDENTIFIER Parameters1;
+
+Alias ::= ALIAS NameType IDENTIFIER SEMIC;
+/*NameType ::= DataType | IDENTIFIER | DictDeclare | SeqDeclare; */
+NameType ::= DataType | DictDeclare | SeqDeclare;
+NewDataType ::= TDEF IDENTIFIER LBRACE DeclarationList RBRACE SEMIC;
+DeclarationList ::=  NameType IDENTIFIER DecListExtension;
+DecListExtension ::= COMMA DeclarationList | Epsilon;
+
+
+NewTypeAssign ::= AllDataValues NewTypeAssign1;
+NewTypeAssign1 ::= COMMA AllDataValues NewTypeAssign2;
+NewTypeAssign2 ::= NewTypeAssign1 | Epsilon;
+
+/*If Statements*/
+IfStatement ::= IF LPAREN Expressions RPAREN THEN  Body IfExtenstion FI;
+IfExtenstion ::= ELSE Body | ELIF LPAREN Expressions RPAREN THEN Body IfExtenstion | Epsilon;
+
+WhileLoop ::= WHILE LPAREN Expressions RPAREN DO Body OD;
+
+ForLoop ::= FORALL LPAREN Expressions IN Expressions RPAREN DO Body OD; //Edited this not sure
+
+//ReturnStatement ::= RETURN Expressions SEMIC;
+
+Read ::= READ IDENTIFIER SEMIC;
+Print ::= PRINT Expressions SEMIC;
+
+FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
+FuncParamList ::= Expressions FuncParamListExtend | Epsilon;
+FuncParamListExtend ::= COMMA FuncParamList1 | Epsilon;
+FuncParamList1::= Expressions FuncParamListExtend;
