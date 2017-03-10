@@ -98,7 +98,7 @@ DataType ::= CHAR|BOOL|INT|RAT|FLOAT|TOP|IDENTIFIER;
 ReturnType ::= VOID|DataType;
 DataValue ::= CHARACTER|BOOLEAN|INTEGER|RATIONAL|FLOAT_LIT|STRING|IDENTIFIER;
 
-VariableDeclare ::= DataType IDENTIFIER VariableAssign SEMIC;
+VariableDeclare ::=  IDENTIFIER COLON DataType VariableAssign SEMIC;
 VariableAssign ::= ASSIGN Assignment2 | Epsilon;  
 
 Assignment ::= Assignment1 ASSIGN Assignment2 SEMIC;
