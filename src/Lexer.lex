@@ -18,22 +18,20 @@ import java_cup.runtime.*;
 %}
 
 
-SingleComment = "#".*[\n|\r|\r\n]
+SingleComment = "#".*[\r|\n|\r\n]
 MultiComment = "/#"(.*|{Whitespace}*)*"#/"
 Comment = {SingleComment} | {MultiComment}
 
 Letter = [a-zA-Z]
 Digit = [0-9]
 IdChar = {Letter} | {Digit} | "_"
-//start with a letter then any letter number or _
 Identifier = {Letter}{IdChar}*
 
-Punctuation = [\.,-\/#$!%\^&\*;:=\-_`~(){}] 
+Punctuation = [\.,-\/#!$%\^&\*;:{}=\-_`~()]
 C_Literal = {Letter}|{Digit}|{Punctuation}
-//char using ' or ’
 Char = {Char1}|{Char2}
-Char1 = ’{C_Literal}’ //
-Char2 = '{C_Literal}' //
+Char1 = ’{C_Literal}’
+Char2 = '{C_Literal}'
 S_Literal = {C_Literal}|[" "]|["\t"]|["\f"]
 String = \"{S_Literal}*\"
 Boolean = [T]|[F]
@@ -46,11 +44,11 @@ Float = {Digit}*\.?{Digit}+
 NegativeNumber = -Number
 
 
-Whitespace = " "|"\t"|\n|\r|\r\n
+Whitespace = \r|\n|\r\n|" "|"\t"
 
 %% 
 <YYINITIAL> {
-  //data types
+  /* Data types */
   "char"               { return symbol(sym.CHAR);}
   "bool"               { return symbol(sym.BOOL);}
   "int"                { return symbol(sym.INT);}
@@ -60,14 +58,14 @@ Whitespace = " "|"\t"|\n|\r|\r\n
   "dict"               { return symbol(sym.DICT);}
   "seq"                { return symbol(sym.SEQ);}
 
-  //declarations
+  /* Declarations */
   "tdef"               { return symbol(sym.TDEF);}
   "fdef"               { return symbol(sym.FDEF);}
   "alias"              { return symbol(sym.ALIAS);}
   "main"               { return symbol(sym.MAIN);}
   "void"               { return symbol(sym.VOID);}
 
-  //operations
+  /* Operators*/
   "+"                  { return symbol(sym.PLUS);}
   "-"                  { return symbol(sym.MINUS);}
   "/"                  { return symbol(sym.DIV);}
@@ -75,7 +73,7 @@ Whitespace = " "|"\t"|\n|\r|\r\n
   "^"                  { return symbol(sym.POW);}
   "="                  { return symbol(sym.ASSIGN);}
 
-  //logic operations
+  /*Logical Operators" */
   "=="                 { return symbol(sym.EQ);} 
   "!="                 { return symbol(sym.NOTEQ);}
   "!"                  { return symbol(sym.NOT);} 
@@ -84,7 +82,7 @@ Whitespace = " "|"\t"|\n|\r|\r\n
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
 
-  //expressions
+  /* Expressions */ 
   "if"                 { return symbol(sym.IF);}
   "then"               { return symbol(sym.THEN);}
   "else"               { return symbol(sym.ELSE);}
@@ -97,11 +95,11 @@ Whitespace = " "|"\t"|\n|\r|\r\n
   "in"                 { return symbol(sym.IN);}
   "return"             { return symbol(sym.RETURN);}
 
-  //io
+  /* IO */
   "read"               { return symbol(sym.READ);}
   "print"              { return symbol(sym.PRINT);}
 
-  //separators
+  /* Seperators */
   "{"                  { return symbol(sym.LBRACE);}
   "}"                  { return symbol(sym.RBRACE);}
   "("                  { return symbol(sym.LPAREN);}
@@ -114,7 +112,7 @@ Whitespace = " "|"\t"|\n|\r|\r\n
   "."                  { return symbol(sym.DOT);}
   ":"                  { return symbol(sym.COLON);}
 
-  //seq funcs
+  /* Other */
   "::"                  { return symbol(sym.CAT);}
   "len"                 { return symbol(sym.LEN);}
 
