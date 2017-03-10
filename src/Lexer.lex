@@ -47,15 +47,13 @@ Float = -?\d*\.\d+
 <YYINITIAL> {
   //data types
   "char"               { return symbol(sym.CHAR);}
-  "bool"               { return symbol(sym.BOOL);}
   "int"                { return symbol(sym.INT);}
   "rat"                { return symbol(sym.RAT);}
   "float"              { return symbol(sym.FLOAT);}
+  "bool"               { return symbol(sym.BOOL);}
   "top"                { return symbol(sym.TOP);}
-  "dict"               { return symbol(sym.DICT);}
-  "seq"                { return symbol(sym.SEQ);}
 
-  //deckarations
+  //declarations
   "tdef"               { return symbol(sym.TDEF);}
   "fdef"               { return symbol(sym.FDEF);}
   "alias"              { return symbol(sym.ALIAS);}
@@ -65,19 +63,20 @@ Float = -?\d*\.\d+
   //numeric operators
   "+"                  { return symbol(sym.PLUS);}
   "-"                  { return symbol(sym.MINUS);}
-  "/"                  { return symbol(sym.DIV);}
-  "*"                  { return symbol(sym.MULT);}
+  "/"                  { return symbol(sym.DIVIS);}
+  "*"                  { return symbol(sym.MULTI);}
   "^"                  { return symbol(sym.POW);}
-  ":="                  { return symbol(sym.ASSIGN);}
+  ":="                 { return symbol(sym.ASSIGN);}
 
   //logic operators
-  "=="                 { return symbol(sym.EQ);} 
-  "!="                 { return symbol(sym.NOTEQ);}
+  "=="                 { return symbol(sym.EQUAL);} 
+  "!="                 { return symbol(sym.NOTEQUAL);}
   "!"                  { return symbol(sym.NOT);} 
   "<"                  { return symbol(sym.LESS);}
-  "<="                 { return symbol(sym.LESSEQ);}
+  "<="                 { return symbol(sym.LESSEQUAL);}
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
+  "=>"				   { return symbol(sym.IMPLIES);}
 
   //expressions 
   "if"                 { return symbol(sym.IF);}
@@ -109,12 +108,8 @@ Float = -?\d*\.\d+
   "."                  { return symbol(sym.DOT);}
   ":"                  { return symbol(sym.COLON);}
 
-  //seq stuff
-  "::"                  { return symbol(sym.CAT);}
-  "len"                 { return symbol(sym.LEN);}
 
-  {Whitespace}         { }
-  {Comment}            { }
+  //Tokens
   {Boolean}            { return symbol(sym.BOOLEAN);} 
   {Char}               { return symbol(sym.CHARACTER);}
   {Integer}            { return symbol(sym.INTEGER, new Integer(yytext()));}
@@ -122,6 +117,8 @@ Float = -?\d*\.\d+
   {Rational}           { return symbol(sym.RATIONAL);}
   {String}             { return symbol(sym.STRING);}
   {Identifier}         { return symbol(sym.IDENTIFIER,yytext());}
+  {Whitespace}         { }
+  {Comment}            { }
 }
 
 [^]  {
