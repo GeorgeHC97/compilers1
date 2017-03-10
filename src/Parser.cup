@@ -31,7 +31,7 @@ nonterminal BooleanOperators, NumericOperators, BooleanCompare, NumericCompare;
 nonterminal BooleanExpression, MathsExpression, Expressions;
 nonterminal MainReturn, Statements, Params, Params1,Params2;
 nonterminal Alias, NameType, NewDataType, DeclarationList, DecListExtension;
-nonterminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, FuncParamList1;
+nonterminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, FuncParamList1, FunctionReturnType;
 nonterminal Parentheses, FuncParamTypes;
 nonterminal NewTypeAssign, NewTypeAssign1, NewTypeAssign2;
 nonterminal Assignment1, Assignment2;
@@ -130,13 +130,15 @@ Expressions ::= MathsExpression
 
 			  
 //FUNCTION DECLARE
-Function ::= FDEF ReturnType IDENTIFIER LPAREN Params RPAREN LBRACE Statements RBRACE SEMIC;
+Function ::= FDEF  IDENTIFIER LPAREN Params RPAREN LBRACE Statements RBRACE SEMIC FunctionReturnType;
 FuncParamTypes ::= DataType;
-Params ::= FuncParamTypes IDENTIFIER Params1
+FunctionReturnType ::= COLON DataType
+					| Epsilon;
+Params ::= IDENTIFIER COLON FuncParamTypes Params1
 			|  Epsilon; 
 Params1 ::= COMMA Params2 
 			| Epsilon;
-Params2 ::= FuncParamTypes IDENTIFIER Params1;
+Params2 ::= IDENTIFIER COLON FuncParamTypes Params1;
 //FUNCTION CALL
 FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
 FuncParamList ::= Expressions FuncParamListExtend 
