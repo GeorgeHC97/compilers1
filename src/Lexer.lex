@@ -69,7 +69,7 @@ Float = -?\d*\.\d+
   ":="                 { return symbol(sym.ASSIGN);}
 
   //logic operators
-  "=="                 { return symbol(sym.EQUAL);} 
+  "="                 { return symbol(sym.EQUAL);} 
   "!="                 { return symbol(sym.NOTEQUAL);}
   "!"                  { return symbol(sym.NOT);} 
   "<"                  { return symbol(sym.LESS);}

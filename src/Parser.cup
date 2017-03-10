@@ -13,32 +13,29 @@ parser code{:
 //Terminals
 terminal IDENTIFIER, BOOLEAN; 
 terminal CHARACTER,INTEGER,RATIONAL,STRING; 
-terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
+terminal CHAR, BOOL, INT, RAT, FLOAT, TOP;
 terminal TDEF, FDEF, ALIAS, MAIN, VOID;
 terminal PLUS, MINUS, DIVIS, MULTI, POW, ASSIGN;
 terminal EQUAL, NOTEQUAL, NOT, LESS, LESSEQUAL, AND, OR, IMPLIES;
-terminal IF,ELSE,ELIF,THEN,FI,WHILE, DO,OD,FORALL,IN, RETURN;
-terminal READ, PRINT;
+terminal IF,ELSE,ELIF,THEN,FI;
+terminal WHILE, DO,OD,FORALL,IN;
+terminal READ, PRINT, RETURN;
 terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
-terminal CAT, LEN;
 terminal BADCHAR, FLOAT_LIT;
 
 //Non Terminals
 nonterminal GlobalDecl, Main, GlobalDecl1;
 nonterminal Epsilon;
-nonterminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssignment, Assignment;
+nonterminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssign, Assignment;
 nonterminal BooleanOperators, NumericOperators, BooleanCompare, NumericCompare;
-
 nonterminal BooleanExpression, MathsExpression, Expressions;
-nonterminal MainReturn, Statements, Parameters, Parameters1,Parameters2;
-
+nonterminal MainReturn, Statements, Params, Params1,Params2;
 nonterminal Alias, NameType, NewDataType, DeclarationList, DecListExtension;
 nonterminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, FuncParamList1;
-
 nonterminal Parentheses, FuncParamTypes;
 nonterminal NewTypeAssign, NewTypeAssign1, NewTypeAssign2;
 nonterminal Assignment1, Assignment2;
-nonterminal AllDataValues, StatementsWithOutEpsilon;
+nonterminal NonEpsilonStatements;
 
 precedence left MINUS;
 precedence left PLUS;
@@ -55,10 +52,11 @@ precedence left IDENTIFIER;
 precedence left LESSEQUAL;
 precedence left LESS;
 precedence left IN;
-
 precedence left POW;
 precedence left RPAREN;
 precedence left LPAREN;
+
+
 
 start with GlobalDecl;
 
@@ -67,90 +65,84 @@ start with GlobalDecl;
 //Must have a main
 GlobalDecl ::= GlobalDecl1 Main GlobalDecl1;
 		
-GlobalDecl1 ::= Function GlobalDecl1 | 
-	    	VariableDeclare GlobalDecl1 | 
-		NewDataType GlobalDecl1 |
-		Alias GlobalDecl1 | Epsilon;
+GlobalDecl1 ::= Function GlobalDecl1
+			| VariableDeclare GlobalDecl1 
+			| NewDataType GlobalDecl1 
+			|Alias GlobalDecl1 
+			| Epsilon;
 		
 //empty non terminal					
 Epsilon ::=     ;
 
 //Main STuff
-Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMIC; 
-MainReturn ::= RETURN Expressions SEMIC | RETURN SEMIC;
+Main ::= MAIN LBRACE NonEpsilonStatements RBRACE SEMIC; 
+MainReturn ::= RETURN Expressions SEMIC 
+			| RETURN SEMIC;
 Body ::= Statements;
-StatementsWithOutEpsilon ::= FunctionCall SEMIC Statements | 
-		VariableDeclare Statements | 
-		NewDataType Statements |
-		Alias Statements |
-		IfStatement Statements |
-		WhileLoop Statements |
-		ForLoop Statements |
-		Read Statements |
-		Print Statements| 
-		Assignment Statements |
-		MainReturn;
-Statements ::=  StatementsWithOutEpsilon |Epsilon;
+NonEpsilonStatements ::= FunctionCall SEMIC Statements 
+						|VariableDeclare Statements 
+						|NewDataType Statements 
+						|Alias Statements 
+						|IfStatement Statements 
+						|WhileLoop Statements 
+						|ForLoop Statements 
+						|Read Statements 
+						|Print Statements
+						|Assignment Statements 
+						|MainReturn;
+Statements ::=  NonEpsilonStatements |Epsilon;
 
 
 //Datatypes and Declaring variables
 DataType ::= CHAR|BOOL|INT|RAT|FLOAT|TOP|IDENTIFIER;
 ReturnType ::= VOID|DataType;
 DataValue ::= CHARACTER|BOOLEAN|INTEGER|RATIONAL|FLOAT_LIT|STRING|IDENTIFIER;
-AllDataValues ::= DataValue;
 
-VariableDeclare ::= DataType IDENTIFIER VariableAssignment SEMIC;
-VariableAssignment ::= ASSIGN Assignment2 | Epsilon;  
+VariableDeclare ::= DataType IDENTIFIER VariableAssign SEMIC;
+VariableAssign ::= ASSIGN Assignment2 | Epsilon;  
 
 Assignment ::= Assignment1 ASSIGN Assignment2 SEMIC;
-Assignment1 ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER; 
-Assignment2 ::= NewTypeAssign |Expressions;
+Assignment1 ::= IDENTIFIER 
+			| IDENTIFIER DOT IDENTIFIER; 
+Assignment2 ::= NewTypeAssign 
+			|Expressions;
 
 //operators
-BooleanOperators ::= AND | OR;
+BooleanOperators ::= AND | OR | IMPLIES;
 NumericOperators ::= PLUS|MINUS|MULTI|DIVIS|POW;
 BooleanCompare ::= EQUAL | NOTEQUAL;
 NumericCompare ::= BooleanCompare | LESS | LESSEQUAL;
 
 
-
-
-
-
-
-
-
-
-
-
-              
-
-
-BooleanExpression ::= Expressions NumericCompare Expressions | 
-		NOT Expressions | 
-		Expressions BooleanOperators Expressions ;
+BooleanExpression ::= Expressions NumericCompare Expressions 
+					| NOT Expressions 
+					| Expressions BooleanOperators Expressions ;
 MathsExpression ::= Expressions NumericOperators Expressions| MINUS Expressions;
 Parentheses ::= LPAREN Expressions RPAREN;
 
-Expressions ::= MathsExpression|
-		BooleanExpression|
-		FunctionCall |  
-		DataValue|
-		IDENTIFIER DOT IDENTIFIER|
-		Parentheses;
+Expressions ::= MathsExpression
+			|BooleanExpression
+			|FunctionCall 
+			| DataValue
+			|IDENTIFIER DOT IDENTIFIER
+			|Parentheses;
 
 
 			  
 //FUNCTION DECLARE
-Function ::= FDEF ReturnType IDENTIFIER LPAREN Parameters RPAREN LBRACE Statements RBRACE SEMIC;
+Function ::= FDEF ReturnType IDENTIFIER LPAREN Params RPAREN LBRACE Statements RBRACE SEMIC;
 FuncParamTypes ::= DataType;
-Parameters ::= FuncParamTypes IDENTIFIER Parameters1|  Epsilon; //Need to check how to do epsilon (null) 
-Parameters1 ::= COMMA Parameters2 | Epsilon;
-Parameters2 ::= FuncParamTypes IDENTIFIER Parameters1;
+Params ::= FuncParamTypes IDENTIFIER Params1
+			|  Epsilon; 
+Params1 ::= COMMA Params2 
+			| Epsilon;
+Params2 ::= FuncParamTypes IDENTIFIER Params1;
 //FUNCTION CALL
 FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
-FuncParamList ::= Expressions FuncParamListExtend | Epsilon;
-FuncParamListExtend ::= COMMA FuncParamList1 | Epsilon;
+FuncParamList ::= Expressions FuncParamListExtend 
+				| Epsilon;
+FuncParamListExtend ::= COMMA FuncParamList1 
+					| Epsilon;
 FuncParamList1::= Expressions FuncParamListExtend;
 
 //ALIAS
@@ -158,18 +150,22 @@ Alias ::= ALIAS NameType IDENTIFIER SEMIC;
 NameType ::= DataType;
 NewDataType ::= TDEF IDENTIFIER LBRACE DeclarationList RBRACE SEMIC;
 DeclarationList ::=  NameType IDENTIFIER DecListExtension;
-DecListExtension ::= COMMA DeclarationList | Epsilon;
+DecListExtension ::= COMMA DeclarationList 
+					| Epsilon;
 
-
-NewTypeAssign ::= AllDataValues NewTypeAssign1;
-NewTypeAssign1 ::= COMMA AllDataValues NewTypeAssign2;
-NewTypeAssign2 ::= NewTypeAssign1 | Epsilon;
+//New Type Decl
+NewTypeAssign ::= DataValue NewTypeAssign1;
+NewTypeAssign1 ::= COMMA DataValue NewTypeAssign2;
+NewTypeAssign2 ::= NewTypeAssign1 
+				| Epsilon;
 
 /*Program Flow Expressions*/
 IfStatement ::= IF LPAREN Expressions RPAREN THEN  Body IfExtenstion FI;
-IfExtenstion ::= ELSE Body | ELIF LPAREN Expressions RPAREN THEN Body IfExtenstion | Epsilon;
+IfExtenstion ::= ELSE Body 
+			| ELIF LPAREN Expressions RPAREN THEN Body IfExtenstion 
+			| Epsilon;
 WhileLoop ::= WHILE LPAREN Expressions RPAREN DO Body OD;
-ForLoop ::= FORALL LPAREN Expressions IN Expressions RPAREN DO Body OD; //Edited this not sure
+ForLoop ::= FORALL LPAREN Expressions IN Expressions RPAREN DO Body OD;
 
 /*IO FUNCTIONS*/
 Read ::= READ IDENTIFIER SEMIC;

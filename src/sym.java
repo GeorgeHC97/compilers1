@@ -6,68 +6,64 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int FLOAT_LIT = 62;
-  public static final int FORALL = 43;
-  public static final int SEQ = 15;
-  public static final int POW = 25;
+  public static final int FLOAT_LIT = 58;
+  public static final int FORALL = 41;
+  public static final int POW = 23;
   public static final int CHAR = 8;
-  public static final int CAT = 59;
-  public static final int SEMIC = 52;
+  public static final int SEMIC = 50;
   public static final int INTEGER = 5;
-  public static final int NOTEQUAL = 28;
-  public static final int LPAREN = 50;
-  public static final int BADCHAR = 61;
+  public static final int NOTEQUAL = 26;
+  public static final int LPAREN = 48;
+  public static final int BADCHAR = 57;
   public static final int INT = 10;
-  public static final int LESS = 30;
-  public static final int MINUS = 22;
-  public static final int RPAREN = 51;
+  public static final int LESS = 28;
+  public static final int MINUS = 20;
+  public static final int RPAREN = 49;
   public static final int CHARACTER = 4;
-  public static final int MORESIGN = 55;
-  public static final int NOT = 29;
-  public static final int AND = 32;
+  public static final int MORESIGN = 53;
+  public static final int NOT = 27;
+  public static final int AND = 30;
   public static final int RATIONAL = 6;
-  public static final int LESSEQUAL = 31;
-  public static final int IN = 44;
-  public static final int OR = 33;
-  public static final int TDEF = 16;
-  public static final int COMMA = 56;
+  public static final int LESSEQUAL = 29;
+  public static final int IN = 42;
+  public static final int OR = 31;
+  public static final int TDEF = 14;
+  public static final int COMMA = 54;
   public static final int BOOL = 9;
-  public static final int FI = 39;
-  public static final int IMPLIES = 34;
+  public static final int FI = 37;
+  public static final int IMPLIES = 32;
   public static final int RAT = 11;
-  public static final int PLUS = 21;
-  public static final int IF = 35;
-  public static final int ASSIGN = 26;
-  public static final int MAIN = 19;
-  public static final int DOT = 57;
+  public static final int PLUS = 19;
+  public static final int ASSIGN = 24;
+  public static final int MAIN = 17;
+  public static final int IF = 33;
+  public static final int DOT = 55;
   public static final int EOF = 0;
   public static final int BOOLEAN = 3;
   public static final int RETURN = 45;
-  public static final int OD = 42;
-  public static final int EQUAL = 27;
+  public static final int OD = 40;
+  public static final int EQUAL = 25;
   public static final int error = 1;
-  public static final int FDEF = 17;
-  public static final int VOID = 20;
-  public static final int LBRACK = 53;
+  public static final int FDEF = 15;
+  public static final int VOID = 18;
+  public static final int LBRACK = 51;
   public static final int TOP = 13;
-  public static final int COLON = 58;
-  public static final int DIVIS = 23;
-  public static final int LBRACE = 48;
-  public static final int ELSE = 36;
-  public static final int DICT = 14;
-  public static final int RBRACK = 54;
-  public static final int READ = 46;
-  public static final int WHILE = 40;
+  public static final int COLON = 56;
+  public static final int DIVIS = 21;
+  public static final int LBRACE = 46;
+  public static final int ELSE = 34;
+  public static final int RBRACK = 52;
+  public static final int READ = 43;
+  public static final int WHILE = 38;
   public static final int FLOAT = 12;
-  public static final int RBRACE = 49;
-  public static final int THEN = 38;
-  public static final int MULTI = 24;
-  public static final int LEN = 60;
+  public static final int RBRACE = 47;
+  public static final int THEN = 36;
+  public static final int MULTI = 22;
   public static final int STRING = 7;
-  public static final int ALIAS = 18;
-  public static final int ELIF = 37;
-  public static final int PRINT = 47;
-  public static final int DO = 41;
+  public static final int ALIAS = 16;
+  public static final int ELIF = 35;
+  public static final int PRINT = 44;
+  public static final int DO = 39;
   public static final int IDENTIFIER = 2;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -84,8 +80,6 @@ public class sym {
   "RAT",
   "FLOAT",
   "TOP",
-  "DICT",
-  "SEQ",
   "TDEF",
   "FDEF",
   "ALIAS",
@@ -115,9 +109,9 @@ public class sym {
   "OD",
   "FORALL",
   "IN",
-  "RETURN",
   "READ",
   "PRINT",
+  "RETURN",
   "LBRACE",
   "RBRACE",
   "LPAREN",
@@ -129,8 +123,6 @@ public class sym {
   "COMMA",
   "DOT",
   "COLON",
-  "CAT",
-  "LEN",
   "BADCHAR",
   "FLOAT_LIT"
   };
