@@ -71,7 +71,7 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "/"                  { return symbol(sym.DIV);}
   "*"                  { return symbol(sym.MULT);}
   "^"                  { return symbol(sym.POW);}
-  "="                  { return symbol(sym.ASSIGN);}
+  ":="                  { return symbol(sym.ASSIGN);}
 
   /*Logical Operators" */
   "=="                 { return symbol(sym.EQ);} 
