@@ -80,6 +80,7 @@ Float = -?\d*\.\d+
   "<="                 { return symbol(sym.LESSEQUAL);}
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
+  "=>"				   { return symbol(sym.IMPLIES);}
 
   /* Expressions */ 
   if                 { return symbol(sym.IF);}
@@ -112,8 +113,8 @@ Float = -?\d*\.\d+
   ":"                  { return symbol(sym.COLON);}
 
   /* Other */
-  "::"                  { return symbol(sym.CAT);}
-  "len"                 { return symbol(sym.LEN);}
+  ::                  { return symbol(sym.CAT);}
+  len                 { return symbol(sym.LEN);}
 
   {Whitespace}         { }
   {Comment}            { }
@@ -121,7 +122,7 @@ Float = -?\d*\.\d+
   {Char}               { return symbol(sym.CHAR, new Character(yytext().charAt(1)));}
   {Integer}            { return symbol(sym.INT, new Integer(yytext()));}
   {Float}              { return symbol(sym.FLOAT, new Float(yytext()));}
-  {Rational}           { return symbol(sym.RAT);}
+  {Rational}           { return symbol(sym.RAT, new Float(yytext()));}
   {String}             { return symbol(sym.STRING, new String(yytext()));}
   {Identifier}         { return symbol(sym.IDENTIFIER,yytext());}
 }

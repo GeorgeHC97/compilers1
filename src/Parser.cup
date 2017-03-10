@@ -11,13 +11,19 @@ parser code{:
 	}
 :}
 
+parser code {:
+    public static void main(String args[]) throws Exception {
+	        new parser(new Yylex(System.in)).parse();
+    }
+:}
+
 
 terminal IDENTIFIER; 
 terminal BOOLEAN, CHARACTER, INTEGER, RATIONAL, STRING; 
 terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
 terminal TDEF, FDEF, ALIAS, MAIN, VOID;
 terminal PLUS, MINUS, DIVIS, MULTI, POW, ASSIGN;
-terminal AND, OR, EQUAL, NOTEQUAL, NOT, LESS, LESSEQUAL;
+terminal AND, OR, EQUAL, NOTEQUAL, NOT, LESS, LESSEQUAL, IMPLIES;
 terminal IF,ELSE,ELIF,THEN,FI,WHILE, DO,OD,FORALL,IN, RETURN;
 terminal READ, PRINT;
 terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMICOLON, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
@@ -53,6 +59,7 @@ precedence left MULTI;
 precedence left COMMA;
 precedence left OR;
 precedence left AND;
+precedence left IMPLIES;
 precedence left NOT;
 precedence left NOTEQUAL;
 precedence left EQUAL;
@@ -72,12 +79,13 @@ start with CodeProject;
 
 CodeProject ::= CodeProject1 Main CodeProject1;
 		
-CodeProject1 ::= Function CodeProject1 | 
-	    	VariableDeclare CodeProject1 | 
-		NewDataType CodeProject1 |
-		Alias CodeProject1 |
-		Dictionary CodeProject1 |
-		Sequence CodeProject1 |Epsilon;
+CodeProject1 ::= Function CodeProject1 
+			| VariableDeclare CodeProject1 
+			|NewDataType CodeProject1 
+			|Alias CodeProject1 
+			|Dictionary CodeProject1 
+			|Sequence CodeProject1 
+			|Epsilon;
 					
 Epsilon ::=     ;
 
