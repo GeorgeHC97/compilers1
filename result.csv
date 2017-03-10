@@ -1,3 +1,5 @@
+
+tests/open/n-c-style-if.s
 Usage: java [-options] class [args...]
            (to execute a class)
    or  java [-options] -jar jarfile [args...]
