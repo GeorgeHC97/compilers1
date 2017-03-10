@@ -11,11 +11,6 @@ parser code{:
 	}
 :}
 
-parser code {:
-    public static void main(String args[]) throws Exception {
-	        new parser(new Yylex(System.in)).parse();
-    }
-:}
 
 
 terminal IDENTIFIER; 
