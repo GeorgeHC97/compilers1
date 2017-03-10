@@ -20,7 +20,7 @@ terminal EQUAL, NOTEQUAL, NOT, LESS, LESSEQUAL, AND, OR, IMPLIES;
 terminal IF,ELSE,ELIF,THEN,FI;
 terminal WHILE, DO,OD,FORALL,IN;
 terminal READ, PRINT, RETURN;
-terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON, QUESTION;
 terminal BADCHAR, FLOAT_LIT;
 
 //Non Terminals
@@ -140,7 +140,8 @@ Params1 ::= COMMA Params2
 			| Epsilon;
 Params2 ::= IDENTIFIER COLON FuncParamTypes Params1;
 //FUNCTION CALL
-FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
+FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN 
+				| QUESTION IDENTIFIER QUESTION IDENTIFIER LPAREN FuncParamList RPAREN;
 FuncParamList ::= Expressions FuncParamListExtend 
 				| Epsilon;
 FuncParamListExtend ::= COMMA FuncParamList1 

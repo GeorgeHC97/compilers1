@@ -107,6 +107,7 @@ Float = -?\d*\.\d+
   ","                  { return symbol(sym.COMMA);}
   "."                  { return symbol(sym.DOT);}
   ":"                  { return symbol(sym.COLON);}
+  "?"				   { return symbol(sym.QUESTION);}
 
 
   //Tokens

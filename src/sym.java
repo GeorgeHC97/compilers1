@@ -6,7 +6,7 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int FLOAT_LIT = 58;
+  public static final int FLOAT_LIT = 59;
   public static final int FORALL = 41;
   public static final int POW = 23;
   public static final int CHAR = 8;
@@ -14,7 +14,7 @@ public class sym {
   public static final int INTEGER = 5;
   public static final int NOTEQUAL = 26;
   public static final int LPAREN = 48;
-  public static final int BADCHAR = 57;
+  public static final int BADCHAR = 58;
   public static final int INT = 10;
   public static final int LESS = 28;
   public static final int MINUS = 20;
@@ -59,6 +59,7 @@ public class sym {
   public static final int RBRACE = 47;
   public static final int THEN = 36;
   public static final int MULTI = 22;
+  public static final int QUESTION = 57;
   public static final int STRING = 7;
   public static final int ALIAS = 16;
   public static final int ELIF = 35;
@@ -123,6 +124,7 @@ public class sym {
   "COMMA",
   "DOT",
   "COLON",
+  "QUESTION",
   "BADCHAR",
   "FLOAT_LIT"
   };
