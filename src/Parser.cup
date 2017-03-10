@@ -1,6 +1,7 @@
 import java_cup.runtime.*;
 
-parser code{:
+parser code
+{://
 	public boolean syntaxErrors = false;
 	public void syntax_error(Symbol current_token) {
 		syntaxErrors = true;
@@ -10,7 +11,7 @@ parser code{:
 	}
 :}
 
-
+/* Terminals */
 terminal IDENTIFIER, BOOLEAN; 
 terminal CHARACTER,INTEGER,RATIONAL,STRING; 
 terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
@@ -23,6 +24,7 @@ terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA,
 terminal CAT, LEN;
 terminal BADCHAR, FLOAT_LIT;
 
+/* non - Terminals */
 nonterminal CodeProject, Main, CodeProject1;
 nonterminal Epsilon, DICTSEQTYPE;
 nonterminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssignment, Assignment;
@@ -45,6 +47,7 @@ nonterminal AllDataValues, StatementsWithOutEpsilon;
 //Might be needed later keep for now 
 //nonterminal BadChar, DictSeqValues, DictSeqID, DictOperator, ReturnStatement, FLOAT_LIT;
 
+/* precedence */
 precedence left MINUS;
 precedence left PLUS;
 precedence left DIV;
@@ -93,19 +96,20 @@ Assignment ::= Assignment1 ASSIGN Assignment2 SEMIC;
 Assignment1 ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER; 
 Assignment2 ::= NewTypeAssign |Expressions;
 
-/*Operators*/
+//Operators
 BooleanOperators ::= AND | OR;
 NumericOperators ::= PLUS|MINUS|MULT|DIV|POW;
 BooleanCompare ::= EQ | NOTEQ;
 NumericCompare ::= BooleanCompare | LESS | LESSEQ;
 
+//////////////////////////////////////////////
 //DictSeqValues ::= IDENTIFIER | DictValues | SeqValues;
 //DictSeqID ::= IDENTIFIER | INTEGER;  //Assuming you can also have a predefined variable
 DictSeqOperator ::= Expressions IN Expressions; //| LEN LBRACK DictSeqID RBRACK; //Not Complete
 //DictOperator ::= IDENTIFIER LBRACK Expressions RBRACK;  //Not Complete
 
 
-
+/* Sequence operators */
 SeqOperator ::= IDENTIFIER SeqOperator1;
 SeqOperator1 ::= LBRACK SeqExpression RBRACK SeqOperator2;
 SeqOperator2 ::= SeqOperator1 | Epsilon;
