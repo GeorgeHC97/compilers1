@@ -18,37 +18,34 @@ import java_cup.runtime.*;
 %}
 
 
-SingleComment = "#".*[\r|\n|\r\n]
-MultiComment = "/#"(.*|{Whitespace}*)*"#/"
-Comment = {SingleComment} | {MultiComment}
+//Comments and Whitespace//
+SingleLineComment = "#".*[\r|\n|\r\n]
+MultiLineComment = "/#"(.*|{Whitespace}*)*"#/"
+Comment = {SingleLineComment} | {MultiLineComment}
+Whitespace = [ \r\n\t\f]
 
 Letter = [a-zA-Z]
-Digit = [0-9]
-IdChar = {Letter} | {Digit} | "_"
-Identifier = {Letter}{IdChar}*
+
+//Identifier must start with a letter
+Identifier = {Letter}\w*
 
 Punctuation = [\.,-\/#!$%\^&\*;:{}=\-_`~()]
-C_Literal = {Letter}|{Digit}|{Punctuation}
-Char = {Char1}|{Char2}
-Char1 = ’{C_Literal}’
-Char2 = '{C_Literal}'
-S_Literal = {C_Literal}|[" "]|["\t"]|["\f"]
-String = \"{S_Literal}*\"
-Boolean = [T]|[F]
+CharLiteral = {Letter}|\d|{Punctuation}
+Char = ’{CharLiteral}’|'{CharLiteral}'
+StringLiteral = {CharLiteral}|[" "]|["\t"]|["\f"]
+String = \"{StringLiteral}*\"
+Boolean = [TF]
+
 Number = {Integers}|{Rational}|{Float}
-NotZero = [1-9]{Digit}*
-Integer = (0|[1-9]{Digit}*)
-Rational = [0-9]*\_([0-9]*\/?[0-9]+)|[0-9]*\/?[0-9]+
-Float = {Digit}*\.?{Digit}+
+NonZero = [1-9]\d*
+Integer = (0|-?{NonZero}\d*)
+Rational = -?\d*\_(\d*\/?\d+) | -?\d*\s*\/\s*\d+ 
+Float = -?\d*\.\d+
 
-NegativeNumber = -Number
-
-
-Whitespace = \r|\n|\r\n|" "|"\t"
 
 %% 
 <YYINITIAL> {
-  /* Data types */
+  //data types
   "char"               { return symbol(sym.CHAR);}
   "bool"               { return symbol(sym.BOOL);}
   "int"                { return symbol(sym.INT);}
@@ -58,14 +55,14 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "dict"               { return symbol(sym.DICT);}
   "seq"                { return symbol(sym.SEQ);}
 
-  /* Declarations */
+  //deckarations
   "tdef"               { return symbol(sym.TDEF);}
   "fdef"               { return symbol(sym.FDEF);}
   "alias"              { return symbol(sym.ALIAS);}
   "main"               { return symbol(sym.MAIN);}
   "void"               { return symbol(sym.VOID);}
 
-  /* Operators*/
+  //numeric operators
   "+"                  { return symbol(sym.PLUS);}
   "-"                  { return symbol(sym.MINUS);}
   "/"                  { return symbol(sym.DIV);}
@@ -73,7 +70,7 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "^"                  { return symbol(sym.POW);}
   ":="                  { return symbol(sym.ASSIGN);}
 
-  /*Logical Operators" */
+  //logic operators
   "=="                 { return symbol(sym.EQ);} 
   "!="                 { return symbol(sym.NOTEQ);}
   "!"                  { return symbol(sym.NOT);} 
@@ -82,7 +79,7 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
 
-  /* Expressions */ 
+  //expressions 
   "if"                 { return symbol(sym.IF);}
   "then"               { return symbol(sym.THEN);}
   "else"               { return symbol(sym.ELSE);}
@@ -95,11 +92,11 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "in"                 { return symbol(sym.IN);}
   "return"             { return symbol(sym.RETURN);}
 
-  /* IO */
+  //io
   "read"               { return symbol(sym.READ);}
   "print"              { return symbol(sym.PRINT);}
 
-  /* Seperators */
+  //separators
   "{"                  { return symbol(sym.LBRACE);}
   "}"                  { return symbol(sym.RBRACE);}
   "("                  { return symbol(sym.LPAREN);}
@@ -112,7 +109,7 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "."                  { return symbol(sym.DOT);}
   ":"                  { return symbol(sym.COLON);}
 
-  /* Other */
+  //seq stuff
   "::"                  { return symbol(sym.CAT);}
   "len"                 { return symbol(sym.LEN);}
 
