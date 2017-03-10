@@ -28,7 +28,7 @@ IdChar = {Letter} | {Digit} | "_"
 //start with a letter then any letter number or _
 Identifier = {Letter}{IdChar}*
 
-Punctuation = [!£$%^*\.,-\/#\&\;:{}()=\-_`~] 
+Punctuation = [\.,-\/#$!%\^&\*;:=\-_`~(){}] 
 C_Literal = {Letter}|{Digit}|{Punctuation}
 //char using ' or ’
 Char = {Char1}|{Char2}
