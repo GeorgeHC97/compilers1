@@ -26,27 +26,25 @@ terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMICOLON, LBRACK, RBRACK, MORESIGN, CO
 terminal CAT, LEN;
 terminal BADCHAR, FLOAT_LIT;
 
-nonterminal CodeProject, Main, CodeProject1;
-nonterminal Epsilon, DICTSEQTYPE;
-nonterminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssignment, Assignment;
-nonterminal BooleanOperators, NumericOperators, BooleanCompare, NumericCompare;
-nonterminal DictSeqOperator;
-nonterminal SeqOperator, SeqExpression, SeqExpression1, SeqExpression2;
-nonterminal ConcatVar, Concat, ConcatExtension, ConcatList;
-nonterminal BooleanExpression, MathsExpression, Expressions;
-nonterminal MainReturn, Statements, Parameters, Parameters1,Parameters2;
-nonterminal DictDeclare, DictDeclareID, Dictionary, DictValues, DictValues1, DictionaryList, DictionaryNest;
-nonterminal SeqDeclare, SeqDeclareID, Sequence, SeqValues,SeqValues1, SequenceList, SequenceNest, SeqListExtension;
-nonterminal Alias, NameType, NewDataType, DeclarationList, DecListExtension;
-nonterminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, DictListExtension,SequenceList1,SequenceList2,SequenceLis3,FuncParamList1;
+non terminal GlobalStatements, Main, GlobalStatements1;
+non terminal Epsilon, DICTSEQTYPE;
+non terminal DataType, ReturnType, DataValue, VariableDeclare, VariableAssignment, Assignment;
+non terminal BooleanOperators, NumericOperators, BooleanCompare, NumericCompare;
+non terminal DictSeqOperator;
+non terminal SeqOperator, SeqExpression, SeqExpression1, SeqExpression2;
+non terminal ConcatVar, Concat, ConcatExtension, ConcatList;
+non terminal BooleanExpression, MathsExpression, Expressions;
+non terminal MainReturn, Statements, Parameters, Parameters1,Parameters2;
+non terminal DictDeclare, DictDeclareID, Dictionary, DictValues, DictValues1, DictionaryList, DictionaryNest;
+non terminal SeqDeclare, SeqDeclareID, Sequence, SeqValues,SeqValues1, SequenceList, SequenceNest, SeqListExtension;
+non terminal Alias, NameType, NewDataType, DeclarationList, DecListExtension;
+non terminal IfStatement, IfExtenstion, WhileLoop, ForLoop, Read, Print, FunctionCall, FuncParamList, FuncParamListExtend, Function, Body, DictListExtension,SequenceList1,SequenceList2,SequenceLis3,FuncParamList1;
 
-nonterminal Parentheses, LengthSeq, FuncParamTypes;
-nonterminal NewTypeAssign, NewTypeAssign1, NewTypeAssign2;
-nonterminal SeqOperator1, SeqOperator2, Assignment1, Assignment2;
-nonterminal AllDataValues, StatementsWithOutEpsilon;
+non terminal Parentheses, LengthSeq, FuncParamTypes;
+non terminal NewTypeAssign, NewTypeAssign1, NewTypeAssign2;
+non terminal SeqOperator1, SeqOperator2, Assignment1, Assignment2;
+non terminal AllDataValues, StatementsWithOutEpsilon;
 
-//Might be needed later keep for now 
-//nonterminal BadChar, DictSeqValues, DictSeqID, DictOperator, ReturnStatement, FLOAT_LIT;
 
 precedence left MINUS;
 precedence left PLUS;
@@ -67,23 +65,44 @@ precedence left CAT;
 precedence left POW;
 precedence left RPAREN;
 precedence left LPAREN;
+precedence left ASSIGN;
 
 //Where the parser begins
-start with CodeProject;
+start with GlobalStatements;
 
 
 
-CodeProject ::= CodeProject1 Main CodeProject1;
-		
-CodeProject1 ::= Function CodeProject1 
-			| VariableDeclare CodeProject1 
-			|NewDataType CodeProject1 
-			|Alias CodeProject1 
-			|Dictionary CodeProject1 
-			|Sequence CodeProject1 
+GlobalStatements ::= GlobalStatements1 Main GlobalStatements1;
+//any of these can be declared outside the main		
+GlobalStatements1 ::= Function GlobalStatements1 
+			| VariableDeclare GlobalStatements1 
+			|NewDataType GlobalStatements1 
+			|Alias GlobalStatements1 
+			|Dictionary GlobalStatements1 
+			|Sequence GlobalStatements1 
 			|Epsilon;
 					
 Epsilon ::=     ;
+
+//Main Stuff
+Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMICOLON; 
+MainReturn ::= RETURN Expressions SEMICOLON | RETURN SEMICOLON;
+Body ::= Statements;
+StatementsWithOutEpsilon ::= FunctionCall SEMICOLON Statements | 
+		VariableDeclare Statements | 
+		NewDataType Statements |
+		Alias Statements |
+		Dictionary Statements |
+		Sequence Statements |
+		IfStatement Statements |
+		WhileLoop Statements |
+		ForLoop Statements |
+		Read Statements |
+		Print Statements| 
+		Assignment Statements |
+		MainReturn;
+Statements ::=  StatementsWithOutEpsilon |Epsilon;
+
 
 //DataTypes
 DataType ::= CHAR|BOOL|INT|RAT|FLOAT|TOP|IDENTIFIER;
@@ -99,7 +118,7 @@ Assignment1 ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER;
 Assignment2 ::= NewTypeAssign |Expressions;
 
 /*Operators*/
-BooleanOperators ::= AND | OR;
+BooleanOperators ::= AND | OR | IMPLIES;
 NumericOperators ::= PLUS|MINUS|MULTI|DIVIS|POW;
 BooleanCompare ::= EQUAL | NOTEQUAL;
 NumericCompare ::= BooleanCompare | LESS | LESSEQUAL;
@@ -168,24 +187,7 @@ Expressions ::= MathsExpression|
 		DictSeqOperator;
 
 		
-//Main Stuff
-Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMICOLON; 
-MainReturn ::= RETURN Expressions SEMICOLON | RETURN SEMICOLON;
-Body ::= Statements;
-StatementsWithOutEpsilon ::= FunctionCall SEMICOLON Statements | 
-		VariableDeclare Statements | 
-		NewDataType Statements |
-		Alias Statements |
-		Dictionary Statements |
-		Sequence Statements |
-		IfStatement Statements |
-		WhileLoop Statements |
-		ForLoop Statements |
-		Read Statements |
-		Print Statements| 
-		Assignment Statements |
-		MainReturn;
-Statements ::=  StatementsWithOutEpsilon |Epsilon;
+
 			  
 
 //Function Declaration

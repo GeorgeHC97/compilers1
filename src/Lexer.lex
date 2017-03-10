@@ -118,12 +118,12 @@ Float = -?\d*\.\d+
 
   {Whitespace}         { }
   {Comment}            { }
-  {Boolean}            { return symbol(sym.BOOL, new Boolean(yytext()));} 
-  {Char}               { return symbol(sym.CHAR, new Character(yytext().charAt(1)));}
-  {Integer}            { return symbol(sym.INT, new Integer(yytext()));}
-  {Float}              { return symbol(sym.FLOAT, new Float(yytext()));}
-  {Rational}           { return symbol(sym.RAT, new Float(yytext()));}
-  {String}             { return symbol(sym.STRING, new String(yytext()));}
+  {Boolean}            { return symbol(sym.BOOLEAN);} 
+  {Char}               { return symbol(sym.CHARACTER);}
+  {Integer}            { return symbol(sym.INTEGER, new Integer(yytext()));}
+  {Float}              { return symbol(sym.FLOAT_LIT, new Float(yytext()));}
+  {Rational}           { return symbol(sym.RATIONAL);}
+  {String}             { return symbol(sym.STRING);}
   {Identifier}         { return symbol(sym.IDENTIFIER,yytext());}
 }
 
