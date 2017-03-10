@@ -13,6 +13,7 @@ parser code{:
 
 
 
+
 terminal IDENTIFIER; 
 terminal BOOLEAN, CHARACTER, INTEGER, RATIONAL, STRING; 
 terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
@@ -63,11 +64,11 @@ precedence left LESSEQUAL;
 precedence left LESS;
 precedence left IN;
 precedence left CAT;
-
 precedence left POW;
 precedence left RPAREN;
 precedence left LPAREN;
 
+//Where the parser begins
 start with CodeProject;
 
 
@@ -84,7 +85,7 @@ CodeProject1 ::= Function CodeProject1
 					
 Epsilon ::=     ;
 
-
+//DataTypes
 DataType ::= CHAR|BOOL|INT|RAT|FLOAT|TOP|IDENTIFIER;
 ReturnType ::= VOID|DataType|SeqDeclare|DictDeclare;
 DataValue ::= CHARACTER|BOOLEAN|INTEGER|RATIONAL|FLOAT_LIT|STRING|IDENTIFIER;
@@ -166,6 +167,8 @@ Expressions ::= MathsExpression|
 		SeqOperator|		
 		DictSeqOperator;
 
+		
+//Main Stuff
 Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMICOLON; 
 MainReturn ::= RETURN Expressions SEMICOLON | RETURN SEMICOLON;
 Body ::= Statements;
@@ -185,12 +188,19 @@ StatementsWithOutEpsilon ::= FunctionCall SEMICOLON Statements |
 Statements ::=  StatementsWithOutEpsilon |Epsilon;
 			  
 
+//Function Declaration
 Function ::= FDEF ReturnType IDENTIFIER LPAREN Parameters RPAREN LBRACE Statements RBRACE SEMICOLON;
 FuncParamTypes ::= DataType | DictDeclare | SeqDeclare;
 Parameters ::= FuncParamTypes IDENTIFIER Parameters1|  Epsilon; //Need to check how to do epsilon (null) 
 Parameters1 ::= COMMA Parameters2 | Epsilon;
 Parameters2 ::= FuncParamTypes IDENTIFIER Parameters1;
+//Function Call
+FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
+FuncParamList ::= Expressions FuncParamListExtend | Epsilon;
+FuncParamListExtend ::= COMMA FuncParamList1 | Epsilon;
+FuncParamList1::= Expressions FuncParamListExtend;
 
+//Alias
 Alias ::= ALIAS NameType IDENTIFIER SEMICOLON;
 /*NameType ::= DataType | IDENTIFIER | DictDeclare | SeqDeclare; */
 NameType ::= DataType | DictDeclare | SeqDeclare;
@@ -203,20 +213,14 @@ NewTypeAssign ::= AllDataValues NewTypeAssign1;
 NewTypeAssign1 ::= COMMA AllDataValues NewTypeAssign2;
 NewTypeAssign2 ::= NewTypeAssign1 | Epsilon;
 
-/*If Statements*/
+/*Program Flow*/
 IfStatement ::= IF LPAREN Expressions RPAREN THEN  Body IfExtenstion FI;
 IfExtenstion ::= ELSE Body | ELIF LPAREN Expressions RPAREN THEN Body IfExtenstion | Epsilon;
-
 WhileLoop ::= WHILE LPAREN Expressions RPAREN DO Body OD;
-
 ForLoop ::= FORALL LPAREN Expressions IN Expressions RPAREN DO Body OD; //Edited this not sure
 
-//ReturnStatement ::= RETURN Expressions SEMICOLON;
 
+//I/O
 Read ::= READ IDENTIFIER SEMICOLON;
 Print ::= PRINT Expressions SEMICOLON;
 
-FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
-FuncParamList ::= Expressions FuncParamListExtend | Epsilon;
-FuncParamListExtend ::= COMMA FuncParamList1 | Epsilon;
-FuncParamList1::= Expressions FuncParamListExtend;

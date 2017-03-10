@@ -70,7 +70,7 @@ Float = -?\d*\.\d+
   "/"                  { return symbol(sym.DIVIS);}
   "*"                  { return symbol(sym.MULTI);}
   "^"                  { return symbol(sym.POW);}
-  "="                  { return symbol(sym.ASSIGN);}
+  ":="                  { return symbol(sym.ASSIGN);}
 
   /*Logical Operators" */
   "=="                 { return symbol(sym.EQUAL);} 
