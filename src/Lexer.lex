@@ -8,103 +8,103 @@ import java_cup.runtime.*;
 %column
 
 %{
-   private Symbol symbol(int type)
-   {
+   private Symbol symbol(int type){
        return new Symbol(type, yyline, yycolumn);
    }
    
-   private Symbol symbol(int type, Object value)
-   {
+   private Symbol symbol(int type, Object value){
        return new Symbol(type, yyline, yycolumn, value);
    }
 %}
 
-//Comments and Whitespace//
-SingleLineComment = "#".*[\r|\n|\r\n]
-MultiLineComment = "/#"(.*|{Whitespace}*)*"#/"
-Comment = {SingleLineComment} | {MultiLineComment}
-Whitespace = [ \r\n\t\f]
+
+SingleComment = "#".*[\r|\n|\r\n]
+MultiComment = "/#"(.*|{Whitespace}*)*"#/"
+Comment = {SingleComment} | {MultiComment}
 
 Letter = [a-zA-Z]
-
-//Identifier must start with a letter
-Identifier = {Letter}\w*
+Digit = [0-9]
+IdChar = {Letter} | {Digit} | "_"
+Identifier = {Letter}{IdChar}*
 
 Punctuation = [\.,-\/#!$%\^&\*;:{}=\-_`~()]
-CharLiteral = {Letter}|\d|{Punctuation}
-Char = ’{CharLiteral}’|'{CharLiteral}'
-StringLiteral = {CharLiteral}|[" "]|["\t"]|["\f"]
-String = \"{StringLiteral}*\"
-Boolean = [TF]
-
+C_Literal = {Letter}|{Digit}|{Punctuation}
+Char = {Char1}|{Char2}
+Char1 = ’{C_Literal}’
+Char2 = '{C_Literal}'
+S_Literal = {C_Literal}|[" "]|["\t"]|["\f"]
+String = \"{S_Literal}*\"
+Boolean = [T]|[F]
 Number = {Integers}|{Rational}|{Float}
-NonZero = [1-9]\d*
-Integer = (0|-?{NonZero}\d*)
-Rational = -?\d*\_(\d*\/?\d+) | -?\d*\s*\/\s*\d+ 
-Float = -?\d*\.\d+
+NotZero = [1-9]{Digit}*
+Integer = (0|[1-9]{Digit}*)
+Rational = [0-9]*\_([0-9]*\/?[0-9]+)|[0-9]*\/?[0-9]+
+Float = {Digit}*\.?{Digit}+
 
+NegativeNumber = -Number
+
+
+Whitespace = \r|\n|\r\n|" "|"\t"
 
 %% 
 <YYINITIAL> {
   /* Data types */
-  char               { return symbol(sym.CHAR);}
-  bool               { return symbol(sym.BOOL);}
-  int                { return symbol(sym.INT);}
-  rat                { return symbol(sym.RAT);}
-  float              { return symbol(sym.FLOAT);}
-  top                { return symbol(sym.TOP);}
-  dict               { return symbol(sym.DICT);}
-  seq                { return symbol(sym.SEQ);}
+  "char"               { return symbol(sym.CHAR);}
+  "bool"               { return symbol(sym.BOOL);}
+  "int"                { return symbol(sym.INT);}
+  "rat"                { return symbol(sym.RAT);}
+  "float"              { return symbol(sym.FLOAT);}
+  "top"                { return symbol(sym.TOP);}
+  "dict"               { return symbol(sym.DICT);}
+  "seq"                { return symbol(sym.SEQ);}
 
   /* Declarations */
-  tdef               { return symbol(sym.TDEF);}
-  fdef               { return symbol(sym.FDEF);}
-  alias              { return symbol(sym.ALIAS);}
-  main               { return symbol(sym.MAIN);}
-  void               { return symbol(sym.VOID);}
-  
+  "tdef"               { return symbol(sym.TDEF);}
+  "fdef"               { return symbol(sym.FDEF);}
+  "alias"              { return symbol(sym.ALIAS);}
+  "main"               { return symbol(sym.MAIN);}
+  "void"               { return symbol(sym.VOID);}
 
   /* Operators*/
   "+"                  { return symbol(sym.PLUS);}
   "-"                  { return symbol(sym.MINUS);}
-  "/"                  { return symbol(sym.DIVIS);}
-  "*"                  { return symbol(sym.MULTI);}
+  "/"                  { return symbol(sym.DIV);}
+  "*"                  { return symbol(sym.MULT);}
   "^"                  { return symbol(sym.POW);}
-  ":="                  { return symbol(sym.ASSIGN);}
+  "="                  { return symbol(sym.ASSIGN);}
 
   /*Logical Operators" */
-  "=="                 { return symbol(sym.EQUAL);} 
-  "!="                 { return symbol(sym.NOTEQUAL);}
+  "=="                 { return symbol(sym.EQ);} 
+  "!="                 { return symbol(sym.NOTEQ);}
   "!"                  { return symbol(sym.NOT);} 
   "<"                  { return symbol(sym.LESS);}
-  "<="                 { return symbol(sym.LESSEQUAL);}
+  "<="                 { return symbol(sym.LESSEQ);}
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
-  "=>"				   { return symbol(sym.IMPLIES);}
 
   /* Expressions */ 
-  if                 { return symbol(sym.IF);}
-  then               { return symbol(sym.THEN);}
-  else               { return symbol(sym.ELSE);}
-  fi                 { return symbol(sym.FI);}
-  elif               { return symbol(sym.ELIF);}
-  while              { return symbol(sym.WHILE);}
-  do                 { return symbol(sym.DO);}
-  od                 { return symbol(sym.OD);}
-  forall             { return symbol(sym.FORALL);}
-  in                 { return symbol(sym.IN);}
-  return             { return symbol(sym.RETURN);}
+  "if"                 { return symbol(sym.IF);}
+  "then"               { return symbol(sym.THEN);}
+  "else"               { return symbol(sym.ELSE);}
+  "fi"                 { return symbol(sym.FI);}
+  "elif"               { return symbol(sym.ELIF);}
+  "while"              { return symbol(sym.WHILE);}
+  "do"                 { return symbol(sym.DO);}
+  "od"                 { return symbol(sym.OD);}
+  "forall"             { return symbol(sym.FORALL);}
+  "in"                 { return symbol(sym.IN);}
+  "return"             { return symbol(sym.RETURN);}
 
   /* IO */
-  read               { return symbol(sym.READ);}
-  print              { return symbol(sym.PRINT);}
+  "read"               { return symbol(sym.READ);}
+  "print"              { return symbol(sym.PRINT);}
 
   /* Seperators */
   "{"                  { return symbol(sym.LBRACE);}
   "}"                  { return symbol(sym.RBRACE);}
   "("                  { return symbol(sym.LPAREN);}
   ")"                  { return symbol(sym.RPAREN);}
-  ";"                  { return symbol(sym.SEMICOLON);}
+  ";"                  { return symbol(sym.SEMIC);}
   "["                  { return symbol(sym.LBRACK);}
   "]"                  { return symbol(sym.RBRACK);}
   ">"                  { return symbol(sym.MORESIGN);}
@@ -113,8 +113,8 @@ Float = -?\d*\.\d+
   ":"                  { return symbol(sym.COLON);}
 
   /* Other */
-  ::                  { return symbol(sym.CAT);}
-  len                 { return symbol(sym.LEN);}
+  "::"                  { return symbol(sym.CAT);}
+  "len"                 { return symbol(sym.LEN);}
 
   {Whitespace}         { }
   {Comment}            { }
