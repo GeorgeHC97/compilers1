@@ -38,7 +38,7 @@ Boolean = [T]|[F]
 Number = {Integers}|{Rational}|{Float}
 NotZero = [1-9]{Digit}*
 Integer = (0|[1-9]{Digit}*)
-Rational = [0-9]*\_([0-9]*\/?[0-9]+)|[0-9]*\/?[0-9]+
+Rational = [0-9]*\_([0-9]*\/?[0-9]+) | [0-9]*" "*\/" "?[0-9]+ 
 Float = {Digit}*\.?{Digit}+
 
 NegativeNumber = -Number
@@ -68,17 +68,17 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   /* Operators*/
   "+"                  { return symbol(sym.PLUS);}
   "-"                  { return symbol(sym.MINUS);}
-  "/"                  { return symbol(sym.DIV);}
-  "*"                  { return symbol(sym.MULT);}
+  "/"                  { return symbol(sym.DIVIS);}
+  "*"                  { return symbol(sym.MULTI);}
   "^"                  { return symbol(sym.POW);}
   "="                  { return symbol(sym.ASSIGN);}
 
   /*Logical Operators" */
-  "=="                 { return symbol(sym.EQ);} 
-  "!="                 { return symbol(sym.NOTEQ);}
+  "=="                 { return symbol(sym.EQUAL);} 
+  "!="                 { return symbol(sym.NOTEQUAL);}
   "!"                  { return symbol(sym.NOT);} 
   "<"                  { return symbol(sym.LESS);}
-  "<="                 { return symbol(sym.LESSEQ);}
+  "<="                 { return symbol(sym.LESSEQUAL);}
   "&&"                 { return symbol(sym.AND);}
   "||"                 { return symbol(sym.OR);}
 
@@ -104,7 +104,7 @@ Whitespace = \r|\n|\r\n|" "|"\t"
   "}"                  { return symbol(sym.RBRACE);}
   "("                  { return symbol(sym.LPAREN);}
   ")"                  { return symbol(sym.RPAREN);}
-  ";"                  { return symbol(sym.SEMIC);}
+  ";"                  { return symbol(sym.SEMICOLON);}
   "["                  { return symbol(sym.LBRACK);}
   "]"                  { return symbol(sym.RBRACK);}
   ">"                  { return symbol(sym.MORESIGN);}

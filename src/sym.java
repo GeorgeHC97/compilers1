@@ -10,33 +10,32 @@ public class sym {
   public static final int FORALL = 42;
   public static final int SEQ = 15;
   public static final int POW = 25;
-  public static final int MULT = 24;
   public static final int CHAR = 8;
   public static final int CAT = 58;
-  public static final int SEMIC = 51;
   public static final int INTEGER = 5;
+  public static final int NOTEQUAL = 30;
   public static final int LPAREN = 49;
   public static final int BADCHAR = 60;
   public static final int INT = 10;
-  public static final int LESS = 30;
+  public static final int LESS = 32;
   public static final int MINUS = 22;
   public static final int RPAREN = 50;
   public static final int CHARACTER = 4;
   public static final int MORESIGN = 54;
-  public static final int NOT = 29;
-  public static final int AND = 32;
+  public static final int SEMICOLON = 51;
+  public static final int NOT = 31;
+  public static final int AND = 27;
   public static final int RATIONAL = 6;
+  public static final int LESSEQUAL = 33;
   public static final int IN = 43;
-  public static final int OR = 33;
+  public static final int OR = 28;
   public static final int TDEF = 16;
   public static final int COMMA = 55;
   public static final int BOOL = 9;
   public static final int FI = 38;
-  public static final int DIV = 23;
   public static final int RAT = 11;
   public static final int PLUS = 21;
   public static final int ASSIGN = 26;
-  public static final int LESSEQ = 31;
   public static final int MAIN = 19;
   public static final int IF = 34;
   public static final int DOT = 56;
@@ -44,13 +43,14 @@ public class sym {
   public static final int BOOLEAN = 3;
   public static final int RETURN = 44;
   public static final int OD = 41;
+  public static final int EQUAL = 29;
   public static final int error = 1;
   public static final int FDEF = 17;
   public static final int VOID = 20;
-  public static final int EQ = 27;
   public static final int LBRACK = 52;
   public static final int TOP = 13;
   public static final int COLON = 57;
+  public static final int DIVIS = 23;
   public static final int LBRACE = 47;
   public static final int ELSE = 35;
   public static final int DICT = 14;
@@ -60,13 +60,13 @@ public class sym {
   public static final int FLOAT = 12;
   public static final int RBRACE = 48;
   public static final int THEN = 37;
+  public static final int MULTI = 24;
   public static final int LEN = 59;
   public static final int STRING = 7;
   public static final int ALIAS = 18;
   public static final int ELIF = 36;
   public static final int PRINT = 46;
   public static final int DO = 40;
-  public static final int NOTEQ = 28;
   public static final int IDENTIFIER = 2;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -92,17 +92,17 @@ public class sym {
   "VOID",
   "PLUS",
   "MINUS",
-  "DIV",
-  "MULT",
+  "DIVIS",
+  "MULTI",
   "POW",
   "ASSIGN",
-  "EQ",
-  "NOTEQ",
-  "NOT",
-  "LESS",
-  "LESSEQ",
   "AND",
   "OR",
+  "EQUAL",
+  "NOTEQUAL",
+  "NOT",
+  "LESS",
+  "LESSEQUAL",
   "IF",
   "ELSE",
   "ELIF",
@@ -120,7 +120,7 @@ public class sym {
   "RBRACE",
   "LPAREN",
   "RPAREN",
-  "SEMIC",
+  "SEMICOLON",
   "LBRACK",
   "RBRACK",
   "MORESIGN",

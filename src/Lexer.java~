@@ -766,7 +766,7 @@ class Lexer implements java_cup.runtime.Scanner {
             }
           case 63: break;
           case 3: 
-            { return symbol(sym.DIV);
+            { return symbol(sym.DIVIS);
             }
           case 64: break;
           case 4: 
@@ -794,7 +794,7 @@ class Lexer implements java_cup.runtime.Scanner {
             }
           case 70: break;
           case 10: 
-            { return symbol(sym.MULT);
+            { return symbol(sym.MULTI);
             }
           case 71: break;
           case 11: 
@@ -830,7 +830,7 @@ class Lexer implements java_cup.runtime.Scanner {
             }
           case 79: break;
           case 19: 
-            { return symbol(sym.SEMIC);
+            { return symbol(sym.SEMICOLON);
             }
           case 80: break;
           case 20: 
@@ -890,15 +890,15 @@ class Lexer implements java_cup.runtime.Scanner {
             }
           case 94: break;
           case 34: 
-            { return symbol(sym.EQ);
+            { return symbol(sym.EQUAL);
             }
           case 95: break;
           case 35: 
-            { return symbol(sym.NOTEQ);
+            { return symbol(sym.NOTEQUAL);
             }
           case 96: break;
           case 36: 
-            { return symbol(sym.LESSEQ);
+            { return symbol(sym.LESSEQUAL);
             }
           case 97: break;
           case 37: 

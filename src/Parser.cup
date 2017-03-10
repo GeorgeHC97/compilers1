@@ -11,15 +11,15 @@ parser code{:
 :}
 
 
-terminal IDENTIFIER, BOOLEAN; 
-terminal CHARACTER,INTEGER,RATIONAL,STRING; 
+terminal IDENTIFIER; 
+terminal BOOLEAN, CHARACTER, INTEGER, RATIONAL, STRING; 
 terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ;
 terminal TDEF, FDEF, ALIAS, MAIN, VOID;
-terminal PLUS, MINUS, DIV, MULT, POW, ASSIGN;
-terminal EQ, NOTEQ, NOT, LESS, LESSEQ, AND, OR;
+terminal PLUS, MINUS, DIVIS, MULTI, POW, ASSIGN;
+terminal AND, OR, EQUAL, NOTEQUAL, NOT, LESS, LESSEQUAL;
 terminal IF,ELSE,ELIF,THEN,FI,WHILE, DO,OD,FORALL,IN, RETURN;
 terminal READ, PRINT;
-terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMIC, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
+terminal LBRACE, RBRACE, LPAREN, RPAREN, SEMICOLON, LBRACK, RBRACK, MORESIGN, COMMA, DOT, COLON;
 terminal CAT, LEN;
 terminal BADCHAR, FLOAT_LIT;
 
@@ -47,16 +47,16 @@ nonterminal AllDataValues, StatementsWithOutEpsilon;
 
 precedence left MINUS;
 precedence left PLUS;
-precedence left DIV;
-precedence left MULT;
+precedence left DIVIS;
+precedence left MULTI;
 precedence left COMMA;
 precedence left OR;
 precedence left AND;
 precedence left NOT;
-precedence left NOTEQ;
-precedence left EQ;
+precedence left NOTEQUAL;
+precedence left EQUAL;
 precedence left IDENTIFIER;
-precedence left LESSEQ;
+precedence left LESSEQUAL;
 precedence left LESS;
 precedence left IN;
 precedence left CAT;
@@ -86,18 +86,18 @@ ReturnType ::= VOID|DataType|SeqDeclare|DictDeclare;
 DataValue ::= CHARACTER|BOOLEAN|INTEGER|RATIONAL|FLOAT_LIT|STRING|IDENTIFIER;
 AllDataValues ::= DataValue | SeqValues | DictValues;
 
-VariableDeclare ::= DataType IDENTIFIER VariableAssignment SEMIC;
+VariableDeclare ::= DataType IDENTIFIER VariableAssignment SEMICOLON;
 VariableAssignment ::= ASSIGN Assignment2 | Epsilon;  
 
-Assignment ::= Assignment1 ASSIGN Assignment2 SEMIC;
+Assignment ::= Assignment1 ASSIGN Assignment2 SEMICOLON;
 Assignment1 ::= IDENTIFIER | IDENTIFIER DOT IDENTIFIER; 
 Assignment2 ::= NewTypeAssign |Expressions;
 
 /*Operators*/
 BooleanOperators ::= AND | OR;
-NumericOperators ::= PLUS|MINUS|MULT|DIV|POW;
-BooleanCompare ::= EQ | NOTEQ;
-NumericCompare ::= BooleanCompare | LESS | LESSEQ;
+NumericOperators ::= PLUS|MINUS|MULTI|DIVIS|POW;
+BooleanCompare ::= EQUAL | NOTEQUAL;
+NumericCompare ::= BooleanCompare | LESS | LESSEQUAL;
 
 //DictSeqValues ::= IDENTIFIER | DictValues | SeqValues;
 //DictSeqID ::= IDENTIFIER | INTEGER;  //Assuming you can also have a predefined variable
@@ -118,7 +118,7 @@ DICTSEQTYPE::= DataType | DictDeclare | SeqDeclare;
 DictDeclare ::= DICT LESS DICTSEQTYPE COMMA DICTSEQTYPE MORESIGN;
 DictDeclareID ::= DictDeclare IDENTIFIER;
 Dictionary ::= DictDeclareID ASSIGN DictValues1; 
-DictValues1 ::= DictValues SEMIC | FunctionCall SEMIC; 
+DictValues1 ::= DictValues SEMICOLON | FunctionCall SEMICOLON; 
 DictValues ::= LBRACE DictionaryList RBRACE;
 DictionaryList ::= DataValue COLON DataValue DictListExtension | DictionaryNest | Epsilon;
 DictionaryNest ::= DictValues DictListExtension;
@@ -127,7 +127,7 @@ DictListExtension ::= COMMA DictionaryList | Epsilon;
 SeqDeclare ::= SEQ LESS DICTSEQTYPE MORESIGN;
 SeqDeclareID ::= SeqDeclare IDENTIFIER;
 Sequence ::= SeqDeclareID ASSIGN SeqValues1;
-SeqValues1 ::= SeqValues SEMIC | FunctionCall SEMIC |Concat SEMIC; 
+SeqValues1 ::= SeqValues SEMICOLON | FunctionCall SEMICOLON |Concat SEMICOLON; 
 SeqValues ::= LBRACK SequenceList RBRACK ;
 SequenceList ::= SequenceList2 | SequenceList1 | SequenceNest | ;
 SequenceList2 ::= DataValue SeqListExtension;
@@ -162,10 +162,10 @@ Expressions ::= MathsExpression|
 		SeqOperator|		
 		DictSeqOperator;
 
-Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMIC; 
-MainReturn ::= RETURN Expressions SEMIC | RETURN SEMIC;
+Main ::= MAIN LBRACE StatementsWithOutEpsilon RBRACE SEMICOLON; 
+MainReturn ::= RETURN Expressions SEMICOLON | RETURN SEMICOLON;
 Body ::= Statements;
-StatementsWithOutEpsilon ::= FunctionCall SEMIC Statements | 
+StatementsWithOutEpsilon ::= FunctionCall SEMICOLON Statements | 
 		VariableDeclare Statements | 
 		NewDataType Statements |
 		Alias Statements |
@@ -181,16 +181,16 @@ StatementsWithOutEpsilon ::= FunctionCall SEMIC Statements |
 Statements ::=  StatementsWithOutEpsilon |Epsilon;
 			  
 
-Function ::= FDEF ReturnType IDENTIFIER LPAREN Parameters RPAREN LBRACE Statements RBRACE SEMIC;
+Function ::= FDEF ReturnType IDENTIFIER LPAREN Parameters RPAREN LBRACE Statements RBRACE SEMICOLON;
 FuncParamTypes ::= DataType | DictDeclare | SeqDeclare;
 Parameters ::= FuncParamTypes IDENTIFIER Parameters1|  Epsilon; //Need to check how to do epsilon (null) 
 Parameters1 ::= COMMA Parameters2 | Epsilon;
 Parameters2 ::= FuncParamTypes IDENTIFIER Parameters1;
 
-Alias ::= ALIAS NameType IDENTIFIER SEMIC;
+Alias ::= ALIAS NameType IDENTIFIER SEMICOLON;
 /*NameType ::= DataType | IDENTIFIER | DictDeclare | SeqDeclare; */
 NameType ::= DataType | DictDeclare | SeqDeclare;
-NewDataType ::= TDEF IDENTIFIER LBRACE DeclarationList RBRACE SEMIC;
+NewDataType ::= TDEF IDENTIFIER LBRACE DeclarationList RBRACE SEMICOLON;
 DeclarationList ::=  NameType IDENTIFIER DecListExtension;
 DecListExtension ::= COMMA DeclarationList | Epsilon;
 
@@ -207,10 +207,10 @@ WhileLoop ::= WHILE LPAREN Expressions RPAREN DO Body OD;
 
 ForLoop ::= FORALL LPAREN Expressions IN Expressions RPAREN DO Body OD; //Edited this not sure
 
-//ReturnStatement ::= RETURN Expressions SEMIC;
+//ReturnStatement ::= RETURN Expressions SEMICOLON;
 
-Read ::= READ IDENTIFIER SEMIC;
-Print ::= PRINT Expressions SEMIC;
+Read ::= READ IDENTIFIER SEMICOLON;
+Print ::= PRINT Expressions SEMICOLON;
 
 FunctionCall ::= IDENTIFIER LPAREN FuncParamList RPAREN ;
 FuncParamList ::= Expressions FuncParamListExtend | Epsilon;
