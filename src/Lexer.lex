@@ -35,11 +35,12 @@ Char2 = '{C_Literal}'
 S_Literal = {C_Literal}|[" "]|["\t"]|["\f"]
 String = \"{S_Literal}*\"
 Boolean = [T]|[F]
+
 Number = {Integers}|{Rational}|{Float}
 NotZero = [1-9]{Digit}*
 Integer = (0|[1-9]{Digit}*)
-Rational = [0-9]*\_([0-9]*\/?[0-9]+) | [0-9]*" "*\/" "?[0-9]+ 
-Float = {Digit}*\.?{Digit}+
+Rational = {Digit}*\_({Digit}*\/?{Digit}+) | {Digit}*\s*\/\s*{Digit}+ 
+Float = {Digit}*\.{Digit}+
 
 NegativeNumber = -Number
 
